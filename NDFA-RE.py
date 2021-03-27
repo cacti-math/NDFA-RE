@@ -1,6 +1,8 @@
 M={}
 M['Q']=[]
-for x in range(3): M['Q'].append('q'+str(x+1))
+for x in range(3):
+    M['Q'].append('q'+str(x+1))
+
 M['sigma']={'0','1'}
 M['delta']={'q1':{'0':'q2','1':'q3'},
             'q2':{'0':'q1','1':'q3 '},
@@ -24,7 +26,7 @@ def R0(i,j):
                A=A|{a}
             cad=str()
             for r in A:
-                cad=cad+str('+')+str(r)
+                cad += str('+')+str(r)
     return cad
 
 def R(i,j,k):
@@ -46,5 +48,3 @@ for m in H:
 
 print(R0(2,1))
 print(S)
-        
-     
