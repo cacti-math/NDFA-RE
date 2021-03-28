@@ -1,3 +1,32 @@
+####Este programa transoforma un Autómata finito no determinístico a una expresión regular####
+# Utilizaremos las funciones definidas en el programa creado por Angel
+from NFAtoDFA import NFAtoDFA
+
+#Dado K un Autómata finito no determinístico lo convertimos en uno determinístico
+K={}
+
+#Definimos los estados del autómata
+K['Q']=['q0','q1']
+
+#Definimos el alfabeto del autómata
+K['Sigma']=['0','1']
+
+#Definimos la función de transición del autómata
+K['delta']={'q0':{'0':['q0'],'1':['q0','q1']},
+             'q1':{'0':[],'1':[]}}
+
+#Definimos el estado inicial del autómata
+K['q0']='q0'
+
+#Definimos el conjunto de estados finales del autómata
+K['F']=['q1']
+
+#Sea T el autómata finito deterministico generado a partir de K
+T = NFAtoDFA(K)
+#print(K)
+
+
+
 M={}
 M['Q']=[]
 for x in range(3):
@@ -14,6 +43,7 @@ M['F']=['q2','q3']
 
 r=M['F']
 n=len(M['Q'])
+
 
 def R0(i,j):
     A=set()
