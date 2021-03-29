@@ -54,7 +54,6 @@ def r(G,i,j,k):
         if i == j:
             R_ij = R_ij | {'e'}
         for a in G['Sigma']:
-        #Esto es una idea, pq no funciona por alguna razón
             if G['delta'][G['Q'][i]][a] == G['Q'][j]:
                 R_ij = R_ij | T['Q'][j]
 
