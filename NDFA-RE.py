@@ -27,54 +27,63 @@ T = NFAtoDFA(K)
 
 
 
-M={}
-M['Q']=[]
-for x in range(3):
-    M['Q'].append('q'+str(x+1))
+#definimos la función suma que nos dara la sauma de dos elementos en el formato buscado
+def suma(a, b):
+    return '[+, '+ str(a) + ' ,' + str(b) + ']'
 
-M['sigma']={'0','1'}
-M['delta']={'q1':{'0':'q2','1':'q3'},
-            'q2':{'0':'q1','1':'q3 '},
-            'q3':{'0':'q2','1':'q2'}}
+#print(suma(3,5))
 
-M['q1']='q1'
+#definimos la función cKleene que nos dara la cerra de Kleene en el formato buscado
+def cKleene(a):
+    return '[*, ' + str(a) + ']'
 
-M['F']=['q2','q3']
+#print (cKleene(4))
 
-r=M['F']
-n=len(M['Q'])
+#definimos la función concaetacion que nos dara la concatenacion de dos elementos
+def producto(a,b):
+    return '[x, '+ str(a) + ' ,' + str(b) + ']'
 
-
-def R0(i,j):
-    A=set()
-    u=M['Q'][i-1]
-    w=M['Q'][j-1]    
-    if i==j:
-        A={'e'}
-    for a in M['delta'][u].keys():
-            if w in M['delta'][u][a]:
-               A=A|{a}
-            cad=str()
-            for r in A:
-                cad += str('+')+str(r)
-    return cad
-
-def R(i,j,k):
-    A=str()
-    if k==0:
-        A=R0(i,j)
-    else:
-        A=str('(')+R(i,k,k-1)+str(')(')+R(k,k,k-1)+str(')')+str('*')+str('+')+str('(')+R(i,j,k-1)+str(')')
-    return A
-
-H=[]
-for x in M['F']:
-    H.append(M['Q'].index(x))
+#print (concatenacion(4,5))
 
 
-S=str()
-for m in H:
-    S+=R(1,m,n)
+#definimos la r(G,i,j,k) de forma recursiva como en el texto a partir de R(i,j,k) considerando un AFD G
+def r(G,i,j,k):
+    R_ij = set()
+    #Primero el caso cuando k = 0
+    if k == 0:
+        if i == j:
+            R_ij = R_ij | {'e'}
+        for a in G['Sigma']:
+        #Esto es una idea, pq no funciona por alguna razón
+            if G['delta'][G['Q'][i]][a] == G['Q'][j]:
+                R_ij = R_ij | T['Q'][j]
 
-print(R0(2,1))
-print(S)
+        #Convertirmos al conjunto R_ij en una lista
+        R_ij.sort()
+        r_ij = R_ij[0]
+        for l in range(len(R_ij)-1):
+            r_ij = suma(r_ij, R_ij[l+1])
+        return r_ij
+    #Utilizando recursión definimos la expresión regular
+    return suma(producto(producto(r(G,i, j, k - 1), cKleene(r(G,k, k, k - 1))), r(G,k, j, k - 1)), r(G,i, j, k - 1))
+
+
+#Finalmente la función que tomará el AFD y lo transformará en expresión regular
+def NDFAtoRE(A):
+    B = NFAtoDFA(A)
+    n = len(B['Q'])
+    F = []
+
+    #Esto no funciona, pero lo que intenta es ver que indíces tienen los elementos de F respecto de la lista T['Q']
+    #para usar esos índices j en en r(1, j, n)
+    for u in B['F']:
+        for v in range(len(B['Q'])):
+            #Esto es lo que no funciona, buscar manera alternativa de hacerlo
+            if u == B['Q'][v]:
+                F.append(v)
+    rf = r(B,1,F[0],n)
+    for j in range(len(F) - 1):
+        rf = suma(rf, r(B,1,F[j+1],n))
+    return rf
+
+#print(NDFAtoRE(K))
