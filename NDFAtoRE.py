@@ -68,7 +68,6 @@ def r(G,i,j,k):
         R_list = []
         for x in R_ij:
             R_list.append(x)
-        #Por alguna razón la lista se quedá vacía
         #print(len(R_list))
         r_ij = R_list[0]
         for l in range(len(R_list)-1):
