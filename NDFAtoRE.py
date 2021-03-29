@@ -77,7 +77,7 @@ def r(G,i,j,k):
     return suma(producto(producto(r(G,i, j, k - 1), cKleene(r(G,k, k, k - 1))), r(G,k, j, k - 1)), r(G,i, j, k - 1))
 
 
-#Finalmente la función que tomará el AFD y lo transformará en expresión regular
+#Finalmente la función que tomará el AFND y lo transformará en expresión regular
 def NDFAtoRE(A):
     B = NFAtoDFA(A)
     n = len(B['Q'])
