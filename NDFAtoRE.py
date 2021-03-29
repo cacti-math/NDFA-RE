@@ -29,19 +29,19 @@ T = NFAtoDFA(K)
 
 #definimos la función suma que nos dara la sauma de dos elementos en el formato buscado
 def suma(a, b):
-    return '[+, '+ str(a) + ' ,' + str(b) + ']'
+    return '{+, '+ str(a) + ' ,' + str(b) + '}'
 
 #print(suma(3,5))
 
 #definimos la función cKleene que nos dara la cerra de Kleene en el formato buscado
 def cKleene(a):
-    return '[*, ' + str(a) + ']'
+    return '{*, ' + str(a) + '}'
 
 #print (cKleene(4))
 
 #definimos la función concaetacion que nos dara la concatenacion de dos elementos
 def producto(a,b):
-    return '[x, '+ str(a) + ' ,' + str(b) + ']'
+    return '{•, '+ str(a) + ' ,' + str(b) + '}'
 
 #print (concatenacion(4,5))
 
@@ -54,14 +54,25 @@ def r(G,i,j,k):
         if i == j:
             R_ij = R_ij | {'e'}
         for a in G['Sigma']:
+            #print('i ',i)
+            #print('j ',j)
+            #print('a ',a)
             if G['delta'][G['Q'][i]][a] == G['Q'][j]:
-                R_ij = R_ij | T['Q'][j]
-
+                #print(T['Q'][j])
+                R_ij = R_ij | {T['Q'][j]}
+                #print(R_ij)
+        #Revisamos si R_ij es vacío
+        if R_ij == set():
+            return '∅'
         #Convertirmos al conjunto R_ij en una lista
-        R_ij.sort()
-        r_ij = R_ij[0]
-        for l in range(len(R_ij)-1):
-            r_ij = suma(r_ij, R_ij[l+1])
+        R_list = []
+        for x in R_ij:
+            R_list.append(x)
+        #Por alguna razón la lista se quedá vacía
+        #print(len(R_list))
+        r_ij = R_list[0]
+        for l in range(len(R_list)-1):
+            r_ij = suma(r_ij, R_list[l+1])
         return r_ij
     #Utilizando recursión definimos la expresión regular
     return suma(producto(producto(r(G,i, j, k - 1), cKleene(r(G,k, k, k - 1))), r(G,k, j, k - 1)), r(G,i, j, k - 1))
@@ -77,9 +88,9 @@ def NDFAtoRE(A):
             if u == B['Q'][v]:
                 F.append(v)
                 break
-    rf = r(B,1,F[0],n)
+    rf = r(B,0,F[0],n-1)
     for j in range(len(F) - 1):
-        rf = suma(rf, r(B,1,F[j+1],n))
+        rf = suma(rf, r(B,1,F[j+1],n-1))
     return rf
 
-#print(NDFAtoRE(K))
+print(NDFAtoRE(K))
