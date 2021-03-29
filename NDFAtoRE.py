@@ -73,12 +73,8 @@ def NDFAtoRE(A):
     B = NFAtoDFA(A)
     n = len(B['Q'])
     F = []
-
-    #Esto no funciona, pero lo que intenta es ver que indíces tienen los estados finales de B (B['F']) respecto de la lista B['Q']
-    #para usar esos índices j en en r(1, j, n)
     for u in B['F']:
         for v in range(len(B['Q'])):
-            #Esto es lo que no funciona, buscar manera alternativa de hacerlo
             if u == B['Q'][v]:
                 F.append(v)
     rf = r(B,1,F[0],n)
