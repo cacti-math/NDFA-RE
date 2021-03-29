@@ -77,6 +77,7 @@ def NDFAtoRE(A):
         for v in range(len(B['Q'])):
             if u == B['Q'][v]:
                 F.append(v)
+                break
     rf = r(B,1,F[0],n)
     for j in range(len(F) - 1):
         rf = suma(rf, r(B,1,F[j+1],n))
