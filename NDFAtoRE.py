@@ -67,7 +67,9 @@ def r(G,i,j,k):
         #Convertirmos al conjunto R_ij en una lista
         R_list = []
         for x in R_ij:
-            R_list.append(x)
+            #Reducimos un poco la expresión quitando algunos vacíos
+            if x != '∅':
+                R_list.append(x)
         #print(len(R_list))
         r_ij = R_list[0]
         for l in range(len(R_list)-1):
@@ -92,4 +94,5 @@ def NDFAtoRE(A):
         rf = suma(rf, r(B,0,F[j+1],n-1))
     return rf
 
+#La usamos para convertir K
 print(NDFAtoRE(K))
