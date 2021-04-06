@@ -59,7 +59,7 @@ def r(G,i,j,k):
             #print('a ',a)
             if G['delta'][G['Q'][i]][a] == G['Q'][j]:
                 #print(T['Q'][j])
-                R_ij = R_ij | {T['Q'][j]}
+                R_ij = R_ij | {a}
                 #print(R_ij)
         #Revisamos si R_ij es vacío
         if R_ij == set():
@@ -89,7 +89,7 @@ def NDFAtoRE(A):
                 break
     rf = r(B,0,F[0],n-1)
     for j in range(len(F) - 1):
-        rf = suma(rf, r(B,1,F[j+1],n-1))
+        rf = suma(rf, r(B,0,F[j+1],n-1))
     return rf
 
 print(NDFAtoRE(K))
