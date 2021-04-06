@@ -29,19 +29,19 @@ T = NFAtoDFA(K)
 
 #definimos la función suma que nos dara la sauma de dos elementos en el formato buscado
 def suma(a, b):
-    return '{+, '+ str(a) + ' ,' + str(b) + '}'
+    return '[+, '+ str(a) + ' ,' + str(b) + ']'
 
 #print(suma(3,5))
 
 #definimos la función cKleene que nos dara la cerra de Kleene en el formato buscado
 def cKleene(a):
-    return '{*, ' + str(a) + '}'
+    return '[*, ' + str(a) + ']'
 
 #print (cKleene(4))
 
 #definimos la función concaetacion que nos dara la concatenacion de dos elementos
 def producto(a,b):
-    return '{•, '+ str(a) + ' ,' + str(b) + '}'
+    return '[•, '+ str(a) + ' ,' + str(b) + ']'
 
 #print (concatenacion(4,5))
 
